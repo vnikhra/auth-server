@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Authenticated!!</title>
+</head>
+<body>
+Authenticated !!
+<script>
+    var urlParams = new URLSearchParams(window.location.search);
+    window.opener.postMessage(urlParams.get("token"), "*");
+    window.close();
+
+</script>
+</body>
+</html>

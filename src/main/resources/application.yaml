@@ -1,0 +1,23 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${google_client_id}
+            clientSecret: ${google_client_secret}
+            redirect-uri: http://${google_auth_server_host}:${google_auth_server_port}/oauth/google
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: create
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: ${mysql_connection}
+    username: ${mysql_username}
+    password: ${mysql_password}
+jwt:
+  privateKey:
+    location: keys/private_key.der
+  publicKey:
+    location: keys/public_key.der
