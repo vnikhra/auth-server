@@ -5,16 +5,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
+    expose:
+      - "80"
     restart: always
     depends_on:
       - docushare-db
     env_file:
       - env.file
     environment:
-      google_client_id: ${google_client_id}
-      google_client_secret: ${google_client_secret}
       google_auth_server_host: localhost
       google_auth_server_port: 8080
       mysql_host: docushare-db
@@ -25,7 +23,7 @@ services:
       - docushare
   docushare-db:
     container_name: docushare-db
-    image: mysql:5.7
+    image: mysql:latest
     restart: always
     environment:
       MYSQL_DATABASE: docu_share_users
