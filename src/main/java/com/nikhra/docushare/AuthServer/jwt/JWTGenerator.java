@@ -23,8 +23,7 @@ public class JWTGenerator implements Serializable {
   @Value("${jwt.privateKey.location}")
   private String privateKeyLocation;
 
-  public String getJWT(User user)
-      throws JWTException {
+  public String getJWT(User user) throws JWTException {
     try {
       var privateKey = getPrivateKey(privateKeyLocation);
       var now = Instant.now();
@@ -47,6 +46,4 @@ public class JWTGenerator implements Serializable {
       throw new JWTException("Wrong key mentioned", ex);
     }
   }
-
-
 }

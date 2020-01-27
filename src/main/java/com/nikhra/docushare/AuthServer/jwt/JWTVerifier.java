@@ -21,12 +21,7 @@ public class JWTVerifier {
   @Value("${jwt.publicKey.location}")
   private String publicKeyLocation;
 
-  public String getUserId(HttpServletRequest request) throws JWTException {
-    return verifyJWT(resolveToken(request)).getName();
-  }
-
-  public UsernamePasswordAuthenticationToken verifyJWT(String tokenString)
-      throws JWTException {
+  public UsernamePasswordAuthenticationToken verifyJWT(String tokenString) throws JWTException {
     try {
       var publicKey = getPublicKey(publicKeyLocation);
       var jwsClaims = verifyJwt(tokenString, publicKey);
@@ -58,5 +53,4 @@ public class JWTVerifier {
     }
     return null;
   }
-
 }

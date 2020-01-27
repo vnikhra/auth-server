@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GoogleOIDCUserService extends OidcUserService {
 
-  @Autowired
-  private UserDAO userDAO;
+  @Autowired private UserDAO userDAO;
 
   @Override
   public OidcUser loadUser(OidcUserRequest userRequest) {
@@ -21,13 +20,13 @@ public class GoogleOIDCUserService extends OidcUserService {
     var attributes = oidcUser.getAttributes();
     var currentRecord = userDAO.getUserByProviderUserId((String) attributes.get("sub"));
     if (currentRecord == null) {
-      var user = new User(
-          (String) attributes.get("name"),
-          (String) attributes.get("email"),
-          SsoProviders.GOOGLE,
-          (String) attributes.get("sub"),
-          (String) attributes.get("picture")
-      );
+      var user =
+          new User(
+              (String) attributes.get("name"),
+              (String) attributes.get("email"),
+              SsoProviders.GOOGLE,
+              (String) attributes.get("sub"),
+              (String) attributes.get("picture"));
       userDAO.createUser(user);
     } else {
       System.out.println(currentRecord.getEmail());

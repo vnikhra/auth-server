@@ -38,7 +38,7 @@ public class JWTUtils {
 
   static Jws<Claims> verifyJwt(String jwtString, PublicKey key)
       throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException,
-      SignatureException, IllegalArgumentException {
+          SignatureException, IllegalArgumentException {
     return Jwts.parser().setSigningKey(key).parseClaimsJws(jwtString);
   }
 }

@@ -20,11 +20,9 @@ public class UserEntity {
   @Type(type = "uuid-char")
   private UUID id;
 
-  @Column
-  private String name;
+  @Column private String name;
 
-  @Column
-  private String email;
+  @Column private String email;
 
   @Column
   @Enumerated(EnumType.STRING)
@@ -36,16 +34,24 @@ public class UserEntity {
   @Column(name = "profile_image")
   private String profileImageUrl;
 
-  public UserEntity(UUID id, String name, String email, SsoProviders provider,
-      String providerUserId, String profileImageUrl) {
+  public UserEntity(
+      UUID id,
+      String name,
+      String email,
+      SsoProviders provider,
+      String providerUserId,
+      String profileImageUrl) {
     this(name, email, provider, providerUserId, profileImageUrl);
     this.id = id;
   }
 
-  public UserEntity() {
-  }
+  public UserEntity() {}
 
-  public UserEntity(String name, String email, SsoProviders provider, String providerUserId,
+  public UserEntity(
+      String name,
+      String email,
+      SsoProviders provider,
+      String providerUserId,
       String profileImageUrl) {
     this.name = name;
     this.email = email;

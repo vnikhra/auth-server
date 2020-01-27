@@ -4,8 +4,6 @@ import com.nikhra.docushare.AuthServer.dao.UserDAO;
 import com.nikhra.docushare.AuthServer.jwt.JWTException;
 import com.nikhra.docushare.AuthServer.jwt.JWTGenerator;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +15,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class GoogleAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-  @Autowired
-  UserDAO userDAO;
+  @Autowired UserDAO userDAO;
 
-  @Autowired
-  JWTGenerator jwtGenerator;
+  @Autowired JWTGenerator jwtGenerator;
 
   @Override
-  public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-      Authentication authentication) throws IOException {
+  public void onAuthenticationSuccess(
+      HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+      throws IOException {
     if (response.isCommitted()) {
       return;
     }

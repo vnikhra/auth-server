@@ -13,19 +13,34 @@ public class User implements Serializable {
   private String providerUserId;
   private String profileImageUrl;
 
-  public User(UUID id, String name, String email, SsoProviders provider, String providerUserId,
+  public User(
+      UUID id,
+      String name,
+      String email,
+      SsoProviders provider,
+      String providerUserId,
       String profileImageUrl) {
     this(name, email, provider, providerUserId, profileImageUrl);
     this.id = id;
   }
 
-  public User(String name, String email, SsoProviders provider, String providerUserId,
+  public User(
+      String name,
+      String email,
+      SsoProviders provider,
+      String providerUserId,
       String profileImageUrl) {
     this.name = name;
     this.email = email;
     this.provider = provider;
     this.providerUserId = providerUserId;
     this.profileImageUrl = profileImageUrl;
+  }
+
+  public User(UUID id, String name, String email) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
   }
 
   public String getEmail() {

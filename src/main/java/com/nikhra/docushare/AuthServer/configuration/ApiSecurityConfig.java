@@ -29,63 +29,68 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Order(1)
 public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
 
-  @Autowired
-  JWTVerifier jwtVerifier;
+  @Autowired JWTVerifier jwtVerifier;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable()
+    http.csrf()
+        .disable()
         .antMatcher("/api/**")
-        .cors().configurationSource(corsConfigurationSource())
-        .and().exceptionHandling().and()
+        .cors()
+        .configurationSource(corsConfigurationSource())
+        .and()
+        .exceptionHandling()
+        .and()
         .authorizeRequests()
         .anyRequest()
         .authenticated()
         .and()
-        .addFilterBefore(new OncePerRequestFilter() {
-          @Override
-          protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-              FilterChain chain) throws IOException, ServletException {
-            try {
-              var authentication = jwtVerifier
-                  .verifyJWT(jwtVerifier.resolveToken(request));
-              SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (JWTException ex) {
-              SecurityContextHolder.clearContext();
-              response.sendError(403, ex.getMessage());
-              System.out.println(ex);
-              return;
-            }
-            chain.doFilter(request, response);
-          }
-        }, UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(
+            new OncePerRequestFilter() {
+              @Override
+              protected void doFilterInternal(
+                  HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+                  throws IOException, ServletException {
+                try {
+                  var authentication = jwtVerifier.verifyJWT(jwtVerifier.resolveToken(request));
+                  SecurityContextHolder.getContext().setAuthentication(authentication);
+                } catch (JWTException ex) {
+                  SecurityContextHolder.clearContext();
+                  response.sendError(403, ex.getMessage());
+                  System.out.println(ex);
+                  return;
+                }
+                chain.doFilter(request, response);
+              }
+            },
+            UsernamePasswordAuthenticationFilter.class)
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and().authenticationProvider(new AuthenticationProvider() {
-      @Override
-      public Authentication authenticate(Authentication authentication)
-          throws AuthenticationException {
-        System.out.println(authentication.getName());
-        return new UsernamePasswordAuthenticationToken(
-            authentication.getName(), "");
-      }
+        .and()
+        .authenticationProvider(
+            new AuthenticationProvider() {
+              @Override
+              public Authentication authenticate(Authentication authentication)
+                  throws AuthenticationException {
+                System.out.println(authentication.getName());
+                return new UsernamePasswordAuthenticationToken(authentication.getName(), "");
+              }
 
-      @Override
-      public boolean supports(Class<?> authentication) {
-        return authentication.equals(UsernamePasswordAuthenticationToken.class);
-      }
-    });
+              @Override
+              public boolean supports(Class<?> authentication) {
+                return authentication.equals(UsernamePasswordAuthenticationToken.class);
+              }
+            });
   }
 
   private CorsConfigurationSource corsConfigurationSource() {
     final CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(ImmutableList.of("*"));
-    configuration.setAllowedMethods(ImmutableList.of("HEAD",
-        "GET", "POST", "PUT", "DELETE", "PATCH"));
-    // setAllowCredentials(true) is important, otherwise:
-    // The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.
+    configuration.setAllowedMethods(
+        ImmutableList.of("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
     configuration.setAllowCredentials(true);
-    configuration.setAllowedHeaders(ImmutableList.of("Authorization", "Cache-Control", "Content-Type"));
+    configuration.setAllowedHeaders(
+        ImmutableList.of("Authorization", "Cache-Control", "Content-Type"));
     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;

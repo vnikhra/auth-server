@@ -14,23 +14,25 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Order(2)
 public class SocialSecurityConfig extends WebSecurityConfigurerAdapter {
 
-  @Autowired
-  GoogleOIDCUserService googleOIDCUserService;
+  @Autowired GoogleOIDCUserService googleOIDCUserService;
 
-  @Autowired
-  GoogleAuthenticationSuccessHandler googleAuthenticationSuccessHandler;
+  @Autowired GoogleAuthenticationSuccessHandler googleAuthenticationSuccessHandler;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
     http.antMatcher("/oauth*/**")
         .authorizeRequests()
-        .anyRequest().authenticated()
-        .and().oauth2Login()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .oauth2Login()
         .redirectionEndpoint()
         .baseUri("/oauth/*")
-        .and().userInfoEndpoint()
+        .and()
+        .userInfoEndpoint()
         .oidcUserService(googleOIDCUserService)
-        .and().successHandler(googleAuthenticationSuccessHandler);
+        .and()
+        .successHandler(googleAuthenticationSuccessHandler);
   }
 }
