@@ -5,7 +5,7 @@ plugins {
     id 'com.google.cloud.tools.jib' version '1.8.0'
 }
 
-group = 'com.nikhra.docushare'
+group = 'com.nikhra.common'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
