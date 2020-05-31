@@ -13,8 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableWebSecurity(debug = true)
-@Order(2)
-public class SocialSecurityConfig extends WebSecurityConfigurerAdapter {
+@Order(3)
+public class SocialSecurityRedirectConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired GoogleOIDCUserService googleOIDCUserService;
   @Autowired GoogleAuthenticationSuccessHandler googleAuthenticationSuccessHandler;
@@ -23,7 +23,7 @@ public class SocialSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.antMatcher("/oauth2/authorization/**")
+    http.antMatcher(new URI(redirectUrl).getPath())
         .authorizeRequests()
         .anyRequest()
         .authenticated()

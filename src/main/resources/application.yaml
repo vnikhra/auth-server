@@ -1,3 +1,5 @@
+server:
+  port: ${service_port}
 spring:
   security:
     oauth2:
@@ -6,7 +8,7 @@ spring:
           google:
             clientId: ${google_client_id}
             clientSecret: ${google_client_secret}
-            redirect-uri: http://localhost:8080/oauth/google
+            redirect-uri: ${google_redirect_url}
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
