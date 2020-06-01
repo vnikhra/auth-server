@@ -1,0 +1,35 @@
+version: '3.3'
+services:
+  auth-server-mysql:
+    image: mysql:8
+    networks:
+      - auth-server-network
+    restart: always
+    env_file:
+      - env.file
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=root--execute \"SHOW DATABASES;\""
+      interval: 2s
+      timeout: 20s
+      retries: 10
+  auth-server:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "8090:8080"
+    env_file:
+      - env.file
+    environment:
+      - WAIT_HOSTS=auth-server-mysql:3306
+      - mysql_host=auth-server-mysql
+      - mysql_port=3306
+    networks:
+      - auth-server-network
+    depends_on:
+      - auth-server-mysql
+
+networks:
+  auth-server-network:
+    driver: bridge
